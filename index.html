@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Math Helper – App Preview</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --primary: #6C63FF;
+      --primary-light: #9D97FF;
+      --secondary: #4ECDC4;
+      --accent: #FF6B6B;
+      --success: #43D9AD;
+      --warning: #FFB84D;
+      --bg: #F4F6FB;
+      --surface: #FFFFFF;
+      --text: #1A1D2E;
+      --text-2: #6B7280;
+      --text-3: #9CA3AF;
+      --border: #E5E7EB;
+      --border-light: #F3F4F6;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* ── Hero ── */
+    .hero {
+      text-align: center;
+      padding: 60px 20px 40px;
+      color: white;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255,255,255,0.15);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 50px;
+      padding: 6px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 20px;
+      color: white;
+    }
+    .hero h1 {
+      font-size: clamp(36px, 6vw, 56px);
+      font-weight: 800;
+      letter-spacing: -1px;
+      margin-bottom: 14px;
+    }
+    .hero h1 span { color: #FFD700; }
+    .hero p {
+      font-size: 18px;
+      opacity: 0.85;
+      max-width: 520px;
+      margin: 0 auto 32px;
+      line-height: 1.6;
+    }
+    .hero-cta {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 13px 26px;
+      border-radius: 50px;
+      font-size: 15px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: transform 0.15s, box-shadow 0.15s;
+      cursor: pointer;
+      border: none;
+    }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.2); }
+    .btn-white { background: white; color: var(--primary); }
+    .btn-outline { background: rgba(255,255,255,0.15); color: white; border: 2px solid rgba(255,255,255,0.4); }
+
+    /* ── Features strip ── */
+    .features-strip {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+      padding: 0 20px 48px;
+    }
+    .feature-pill {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      background: rgba(255,255,255,0.15);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 50px;
+      padding: 8px 16px;
+      color: white;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    /* ── Screens section ── */
+    .screens-section {
+      width: 100%;
+      max-width: 1100px;
+      padding: 0 20px 80px;
+    }
+    .section-label {
+      text-align: center;
+      color: rgba(255,255,255,0.7);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 28px;
+    }
+
+    /* ── Phone mockup ── */
+    .phones-row {
+      display: flex;
+      gap: 24px;
+      justify-content: center;
+      align-items: flex-end;
+      flex-wrap: wrap;
+    }
+    .phone-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+    }
+    .phone-label {
+      font-size: 13px;
+      font-weight: 700;
+      color: rgba(255,255,255,0.8);
+      letter-spacing: 0.5px;
+    }
+    .phone {
+      width: 220px;
+      background: #1A1D2E;
+      border-radius: 40px;
+      padding: 12px;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.1);
+      position: relative;
+    }
+    .phone.featured {
+      width: 240px;
+      transform: translateY(-16px);
+      box-shadow: 0 40px 100px rgba(108,99,255,0.5), 0 0 0 1px rgba(108,99,255,0.3);
+    }
+    .phone-notch {
+      width: 80px;
+      height: 22px;
+      background: #1A1D2E;
+      border-radius: 0 0 14px 14px;
+      margin: 0 auto 8px;
+      position: relative;
+      z-index: 2;
+    }
+    .phone-screen {
+      background: var(--bg);
+      border-radius: 28px;
+      overflow: hidden;
+      min-height: 430px;
+    }
+
+    /* ── Dashboard screen ── */
+    .ds-header {
+      background: var(--surface);
+      padding: 16px 16px 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border-light);
+    }
+    .ds-greeting { font-size: 10px; color: var(--text-2); margin-bottom: 2px; }
+    .ds-title { font-size: 17px; font-weight: 800; color: var(--text); }
+    .ds-icon-wrap {
+      width: 36px; height: 36px; border-radius: 12px;
+      background: #6C63FF18;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+    }
+    .ds-body { padding: 12px; }
+    .ds-stats { display: flex; gap: 8px; margin-bottom: 12px; }
+    .ds-stat {
+      flex: 1; background: var(--surface); border-radius: 12px;
+      padding: 10px 6px; text-align: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    .ds-stat-icon { font-size: 14px; margin-bottom: 3px; }
+    .ds-stat-val { font-size: 14px; font-weight: 800; margin-bottom: 2px; }
+    .ds-stat-lbl { font-size: 8px; color: var(--text-2); font-weight: 600; }
+    .ds-card {
+      background: var(--surface);
+      border-radius: 16px;
+      padding: 14px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      margin-bottom: 12px;
+    }
+    .ds-card-title { font-size: 12px; font-weight: 800; color: var(--text); margin-bottom: 4px; }
+    .ds-card-sub { font-size: 10px; color: var(--text-2); margin-bottom: 12px; }
+    .ds-scan-btns { display: flex; gap: 8px; }
+    .ds-scan-btn {
+      flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 10px 4px;
+    }
+    .ds-scan-icon {
+      width: 38px; height: 38px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center; font-size: 16px;
+    }
+    .ds-scan-lbl { font-size: 10px; font-weight: 700; color: var(--text); }
+    .ds-scan-sub { font-size: 9px; color: var(--text-2); }
+    .ds-divider { width: 1px; background: var(--border-light); margin: 4px 0; }
+    .ds-section-hdr {
+      display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;
+    }
+    .ds-section-title { font-size: 13px; font-weight: 800; color: var(--text); }
+    .ds-see-all { font-size: 11px; color: var(--primary); font-weight: 600; }
+    .ds-empty {
+      border: 1.5px dashed var(--border);
+      border-radius: 14px;
+      padding: 20px 12px;
+      text-align: center;
+    }
+    .ds-empty-icon { font-size: 22px; margin-bottom: 8px; }
+    .ds-empty-text { font-size: 10px; color: var(--text-2); line-height: 1.5; }
+
+    /* ── Tab bar ── */
+    .tab-bar {
+      background: var(--surface);
+      border-top: 1px solid var(--border-light);
+      display: flex;
+      padding: 8px 4px 10px;
+    }
+    .tab-item {
+      flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px;
+    }
+    .tab-icon { font-size: 18px; }
+    .tab-lbl { font-size: 9px; font-weight: 600; color: var(--text-3); }
+    .tab-item.active .tab-lbl { color: var(--primary); }
+    .tab-dot {
+      width: 4px; height: 4px; border-radius: 50%;
+      background: var(--primary); margin-top: 1px;
+    }
+
+    /* ── Learn screen ── */
+    .learn-header {
+      background: var(--surface);
+      padding: 16px;
+      border-bottom: 1px solid var(--border-light);
+    }
+    .learn-title { font-size: 17px; font-weight: 800; color: var(--text); margin-bottom: 2px; }
+    .learn-sub { font-size: 10px; color: var(--text-2); margin-bottom: 10px; }
+    .learn-search {
+      background: var(--bg);
+      border-radius: 10px;
+      padding: 8px 10px;
+      font-size: 10px;
+      color: var(--text-3);
+      display: flex; align-items: center; gap: 6px;
+    }
+    .learn-body { padding: 12px; }
+    .learn-levels { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; }
+    .level-chip {
+      padding: 5px 10px; border-radius: 50px;
+      font-size: 9px; font-weight: 700;
+      border: 1.5px solid;
+    }
+    .learn-course {
+      background: var(--surface);
+      border-radius: 14px;
+      overflow: hidden;
+      margin-bottom: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    .learn-course-header {
+      padding: 10px 12px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .learn-course-icon {
+      width: 32px; height: 32px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center; font-size: 14px;
+    }
+    .learn-course-name { font-size: 12px; font-weight: 800; color: var(--text); margin-bottom: 2px; }
+    .learn-course-count { font-size: 10px; color: var(--text-2); }
+    .learn-topic {
+      padding: 8px 12px;
+      border-top: 1px solid var(--border-light);
+      display: flex; align-items: center; gap: 8px;
+    }
+    .learn-topic-num {
+      width: 20px; height: 20px; border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 9px; font-weight: 800;
+    }
+    .learn-topic-title { font-size: 10px; font-weight: 700; color: var(--text); flex: 1; }
+    .learn-topic-mins { font-size: 9px; color: var(--text-3); }
+
+    /* ── Quiz screen ── */
+    .quiz-header { padding: 16px; display: flex; justify-content: space-between; align-items: center; }
+    .quiz-title { font-size: 17px; font-weight: 800; color: var(--text); }
+    .quiz-sub { font-size: 10px; color: var(--text-2); margin-top: 2px; }
+    .streak-badge {
+      display: flex; align-items: center; gap: 4px;
+      background: #FF6B6B18; border-radius: 50px;
+      padding: 5px 10px;
+    }
+    .streak-num { font-size: 13px; font-weight: 800; color: var(--accent); }
+    .quiz-body { padding: 0 12px 12px; }
+    .quiz-card {
+      background: var(--surface);
+      border-radius: 14px;
+      padding: 12px;
+      margin-bottom: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    .quiz-card-title { font-size: 11px; font-weight: 800; color: var(--text); margin-bottom: 10px; }
+    .diff-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+    .diff-btn {
+      padding: 8px; border-radius: 10px;
+      text-align: center; cursor: pointer;
+      border: 1.5px solid var(--border);
+    }
+    .diff-btn.selected { border-color: var(--primary); background: #6C63FF10; }
+    .diff-icon { font-size: 14px; margin-bottom: 3px; }
+    .diff-label { font-size: 10px; font-weight: 700; color: var(--text); }
+    .category-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+    .cat-btn {
+      padding: 8px 6px; border-radius: 10px;
+      display: flex; align-items: center; gap: 6px;
+      border: 1.5px solid var(--border);
+    }
+    .cat-btn.selected { border-color: var(--primary); background: #6C63FF10; }
+    .cat-icon {
+      width: 26px; height: 26px; border-radius: 8px;
+      display: flex; align-items: center; justify-content: center; font-size: 12px;
+    }
+    .cat-name { font-size: 10px; font-weight: 700; color: var(--text); }
+    .start-btn {
+      background: var(--primary);
+      color: white;
+      border-radius: 12px;
+      padding: 12px;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 800;
+      margin-top: 4px;
+      box-shadow: 0 4px 16px #6C63FF40;
+    }
+
+    /* ── Info section ── */
+    .info-section {
+      width: 100%;
+      max-width: 960px;
+      padding: 0 20px 80px;
+    }
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+    }
+    .info-card {
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 20px;
+      padding: 28px 24px;
+      color: white;
+    }
+    .info-card-icon { font-size: 32px; margin-bottom: 14px; }
+    .info-card h3 { font-size: 18px; font-weight: 800; margin-bottom: 8px; }
+    .info-card p { font-size: 14px; opacity: 0.8; line-height: 1.6; }
+
+    /* ── Tech stack ── */
+    .tech-section {
+      width: 100%; max-width: 960px;
+      padding: 0 20px 80px;
+      text-align: center;
+    }
+    .tech-label {
+      color: rgba(255,255,255,0.6);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+    .tech-pills {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .tech-pill {
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: white;
+      border-radius: 50px;
+      padding: 9px 20px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    /* ── Footer ── */
+    .footer {
+      color: rgba(255,255,255,0.5);
+      font-size: 13px;
+      text-align: center;
+      padding: 0 20px 40px;
+    }
+    .footer a { color: rgba(255,255,255,0.7); }
+
+    @media (max-width: 600px) {
+      .phones-row { gap: 12px; }
+      .phone { width: 180px; }
+      .phone.featured { width: 200px; }
+      .phone-screen { min-height: 360px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-badge">🧮 Open Source · React Native · Expo</div>
+    <h1>Math <span>Helper</span></h1>
+    <p>Snap a photo of any math problem and get instant AI-powered step-by-step solutions. Learn, quiz, and track your progress.</p>
+    <div class="hero-cta">
+      <a href="https://github.com/hammadashraf96/math-helper" class="btn btn-white">⭐ View on GitHub</a>
+      <a href="#screens" class="btn btn-outline">👀 See Screens</a>
+    </div>
+  </div>
+
+  <!-- Feature pills -->
+  <div class="features-strip">
+    <div class="feature-pill">📸 Scan & Solve</div>
+    <div class="feature-pill">🤖 AI-Powered</div>
+    <div class="feature-pill">📚 Structured Lessons</div>
+    <div class="feature-pill">🧩 Practice Quizzes</div>
+    <div class="feature-pill">🔖 Save Problems</div>
+    <div class="feature-pill">📊 Track Progress</div>
+  </div>
+
+  <!-- Screens -->
+  <div class="screens-section" id="screens">
+    <p class="section-label">App Screens</p>
+    <div class="phones-row">
+
+      <!-- Learn screen -->
+      <div class="phone-wrapper">
+        <div class="phone">
+          <div class="phone-notch"></div>
+          <div class="phone-screen">
+            <div class="learn-header">
+              <div class="learn-title">Learn</div>
+              <div class="learn-sub">Explore math topics by level</div>
+              <div class="learn-search">🔍 Search topics…</div>
+            </div>
+            <div class="learn-body">
+              <div class="learn-levels">
+                <div class="level-chip" style="color:#FF9F43;border-color:#FF9F4340;background:#FF9F4310">Elementary</div>
+                <div class="level-chip" style="color:#6C63FF;border-color:#6C63FF40;background:#6C63FF10">High School</div>
+                <div class="level-chip" style="color:#FF6B6B;border-color:#FF6B6B40;background:#FF6B6B10">AP</div>
+                <div class="level-chip" style="color:#43D9AD;border-color:#43D9AD40;background:#43D9AD10">College</div>
+              </div>
+              <div class="learn-course">
+                <div class="learn-course-header">
+                  <div class="learn-course-icon" style="background:#6C63FF18">📐</div>
+                  <div>
+                    <div class="learn-course-name">Algebra</div>
+                    <div class="learn-course-count">6 topics · ~42 min</div>
+                  </div>
+                </div>
+                <div class="learn-topic">
+                  <div class="learn-topic-num" style="background:#6C63FF18;color:#6C63FF">1</div>
+                  <div class="learn-topic-title">Linear Equations</div>
+                  <div class="learn-topic-mins">8m</div>
+                </div>
+                <div class="learn-topic">
+                  <div class="learn-topic-num" style="background:#6C63FF18;color:#6C63FF">2</div>
+                  <div class="learn-topic-title">Quadratic Equations</div>
+                  <div class="learn-topic-mins">10m</div>
+                </div>
+              </div>
+              <div class="learn-course">
+                <div class="learn-course-header">
+                  <div class="learn-course-icon" style="background:#4ECDC418">📏</div>
+                  <div>
+                    <div class="learn-course-name">Geometry</div>
+                    <div class="learn-course-count">5 topics · ~35 min</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="tab-bar">
+              <div class="tab-item"><div class="tab-icon">🏠</div><div class="tab-lbl">Home</div></div>
+              <div class="tab-item active"><div class="tab-icon">📚</div><div class="tab-lbl" style="color:var(--primary)">Learn</div><div class="tab-dot"></div></div>
+              <div class="tab-item"><div class="tab-icon">🧩</div><div class="tab-lbl">Quiz</div></div>
+              <div class="tab-item"><div class="tab-icon">🔖</div><div class="tab-lbl">Saved</div></div>
+              <div class="tab-item"><div class="tab-icon">⚙️</div><div class="tab-lbl">Settings</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="phone-label">Learn</div>
+      </div>
+
+      <!-- Dashboard (featured, center) -->
+      <div class="phone-wrapper">
+        <div class="phone featured">
+          <div class="phone-notch"></div>
+          <div class="phone-screen">
+            <div class="ds-header">
+              <div>
+                <div class="ds-greeting">Good morning 👋</div>
+                <div class="ds-title">Math Helper</div>
+              </div>
+              <div class="ds-icon-wrap">🧮</div>
+            </div>
+            <div class="ds-body">
+              <div class="ds-stats">
+                <div class="ds-stat">
+                  <div class="ds-stat-icon">📷</div>
+                  <div class="ds-stat-val" style="color:var(--primary)">12</div>
+                  <div class="ds-stat-lbl">Scans Saved</div>
+                </div>
+                <div class="ds-stat">
+                  <div class="ds-stat-icon">✅</div>
+                  <div class="ds-stat-val" style="color:#43D9AD">34</div>
+                  <div class="ds-stat-lbl">Problems Solved</div>
+                </div>
+                <div class="ds-stat">
+                  <div class="ds-stat-icon">📚</div>
+                  <div class="ds-stat-val" style="color:#FFB84D">8</div>
+                  <div class="ds-stat-lbl">Topics Covered</div>
+                </div>
+              </div>
+              <div class="ds-card">
+                <div class="ds-card-title">Scan a Problem</div>
+                <div class="ds-card-sub">Upload or take a photo of your homework</div>
+                <div class="ds-scan-btns">
+                  <div class="ds-scan-btn">
+                    <div class="ds-scan-icon" style="background:#6C63FF15">📷</div>
+                    <div class="ds-scan-lbl">Take Photo</div>
+                    <div class="ds-scan-sub">Use camera</div>
+                  </div>
+                  <div class="ds-divider"></div>
+                  <div class="ds-scan-btn">
+                    <div class="ds-scan-icon" style="background:#4ECDC420">🖼️</div>
+                    <div class="ds-scan-lbl">Upload Photo</div>
+                    <div class="ds-scan-sub">From gallery</div>
+                  </div>
+                </div>
+              </div>
+              <div class="ds-section-hdr">
+                <div class="ds-section-title">Recent Saves</div>
+                <div class="ds-see-all">See all</div>
+              </div>
+              <div class="ds-empty">
+                <div class="ds-empty-icon">🔖</div>
+                <div class="ds-empty-text">Scan and save problems —<br>they'll appear here.</div>
+              </div>
+            </div>
+            <div class="tab-bar">
+              <div class="tab-item active"><div class="tab-icon">🏠</div><div class="tab-lbl" style="color:var(--primary)">Home</div><div class="tab-dot"></div></div>
+              <div class="tab-item"><div class="tab-icon">📚</div><div class="tab-lbl">Learn</div></div>
+              <div class="tab-item"><div class="tab-icon">🧩</div><div class="tab-lbl">Quiz</div></div>
+              <div class="tab-item"><div class="tab-icon">🔖</div><div class="tab-lbl">Saved</div></div>
+              <div class="tab-item"><div class="tab-icon">⚙️</div><div class="tab-lbl">Settings</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="phone-label" style="color:white;font-weight:800">Dashboard ✦</div>
+      </div>
+
+      <!-- Quiz screen -->
+      <div class="phone-wrapper">
+        <div class="phone">
+          <div class="phone-notch"></div>
+          <div class="phone-screen">
+            <div style="background:var(--surface)">
+              <div class="quiz-header">
+                <div>
+                  <div class="quiz-title">Quiz</div>
+                  <div class="quiz-sub">Test your math skills</div>
+                </div>
+                <div class="streak-badge">🔥 <span class="streak-num">7</span></div>
+              </div>
+            </div>
+            <div class="quiz-body">
+              <div class="quiz-card">
+                <div class="quiz-card-title">1. Choose Difficulty</div>
+                <div class="diff-grid">
+                  <div class="diff-btn"><div class="diff-icon">🌱</div><div class="diff-label">Easy</div></div>
+                  <div class="diff-btn selected"><div class="diff-icon">⚡</div><div class="diff-label">Medium</div></div>
+                  <div class="diff-btn"><div class="diff-icon">🔥</div><div class="diff-label">Hard</div></div>
+                  <div class="diff-btn"><div class="diff-icon">🎲</div><div class="diff-label">Mixed</div></div>
+                </div>
+              </div>
+              <div class="quiz-card">
+                <div class="quiz-card-title">2. Choose Category</div>
+                <div class="category-grid">
+                  <div class="cat-btn selected">
+                    <div class="cat-icon" style="background:#6C63FF18">📐</div>
+                    <div class="cat-name">Algebra</div>
+                  </div>
+                  <div class="cat-btn">
+                    <div class="cat-icon" style="background:#4ECDC418">📏</div>
+                    <div class="cat-name">Geometry</div>
+                  </div>
+                  <div class="cat-btn">
+                    <div class="cat-icon" style="background:#FF6B6B18">∫</div>
+                    <div class="cat-name">Calculus</div>
+                  </div>
+                  <div class="cat-btn">
+                    <div class="cat-icon" style="background:#FFB84D18">📊</div>
+                    <div class="cat-name">Statistics</div>
+                  </div>
+                </div>
+              </div>
+              <div class="start-btn">🚀 Start Quiz</div>
+            </div>
+            <div class="tab-bar">
+              <div class="tab-item"><div class="tab-icon">🏠</div><div class="tab-lbl">Home</div></div>
+              <div class="tab-item"><div class="tab-icon">📚</div><div class="tab-lbl">Learn</div></div>
+              <div class="tab-item active"><div class="tab-icon">🧩</div><div class="tab-lbl" style="color:var(--primary)">Quiz</div><div class="tab-dot"></div></div>
+              <div class="tab-item"><div class="tab-icon">🔖</div><div class="tab-lbl">Saved</div></div>
+              <div class="tab-item"><div class="tab-icon">⚙️</div><div class="tab-lbl">Settings</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="phone-label">Quiz</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Feature cards -->
+  <div class="info-section">
+    <div class="info-grid">
+      <div class="info-card">
+        <div class="info-card-icon">📸</div>
+        <h3>Scan & Solve</h3>
+        <p>Point your camera at any math problem — handwritten or printed. AI analyzes it and returns step-by-step solutions with difficulty ratings.</p>
+      </div>
+      <div class="info-card">
+        <div class="info-card-icon">📚</div>
+        <h3>Structured Curriculum</h3>
+        <p>Browse lessons from Elementary through Advanced college math — Algebra, Geometry, Calculus, Statistics, Trigonometry, and more.</p>
+      </div>
+      <div class="info-card">
+        <div class="info-card-icon">🧩</div>
+        <h3>Practice Quizzes</h3>
+        <p>Test yourself with quizzes by category and difficulty. Track your 7-day streak and monitor improvement over time.</p>
+      </div>
+      <div class="info-card">
+        <div class="info-card-icon">🔖</div>
+        <h3>Save & Revisit</h3>
+        <p>Save any scanned problem to your personal library. See your stats — scans saved, problems solved, and topics covered.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tech stack -->
+  <div class="tech-section">
+    <div class="tech-label">Built With</div>
+    <div class="tech-pills">
+      <div class="tech-pill">⚛️ React Native</div>
+      <div class="tech-pill">📱 Expo</div>
+      <div class="tech-pill">🗂️ Expo Router</div>
+      <div class="tech-pill">🤖 OpenAI API</div>
+      <div class="tech-pill">💾 AsyncStorage</div>
+      <div class="tech-pill">📝 TypeScript</div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    Built with ❤️ by <a href="https://github.com/hammadashraf96">hammadashraf96</a> · MIT License
+  </div>
+
+</body>
+</html>
